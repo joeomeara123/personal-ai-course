@@ -1,0 +1,13 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# node (not used at runtime, but just in case)
+node_modules/
+
+# exported progress backups
+ai-course-progress.json
+*.progress.json
