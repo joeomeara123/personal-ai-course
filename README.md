@@ -20,10 +20,12 @@ hands-on **exercise** (with a reveal-able hint), a **summary**, and a **key-term
 
 ### Features
 - ✅ Progress bar + per-section completion counts, mark-complete toggles
+- 🎉 Delightful GSAP animations: staggered lesson reveal, animated count-up progress bar, a confetti burst when you complete a topic, a toast when you finish a section, and a full celebration when you finish all 84
 - 💾 Auto-save & resume (last topic, completed topics, collapsed sections, theme)
 - 🔎 Instant topic search · ⌨️ arrow-key navigation (← / →)
 - 🌙 Light / dark theme · 📱 works on phone & desktop
-- 🔌 100% offline — zero external requests, zero dependencies
+- ♿ Respects `prefers-reduced-motion` (animations gracefully turn off)
+- 🔌 100% offline — zero external requests, zero dependencies (GSAP is bundled *inline*, not from a CDN)
 
 ## 📚 What's covered
 
@@ -42,12 +44,14 @@ The single `index.html` is **built** from small source pieces, so the content is
 and regenerate:
 
 ```
-topics.json      # canonical list of all 84 topics (id, order, section, title)
-SPEC.md          # the content contract every topic follows
-content/*.json   # one file per topic — the actual lessons (the "source of truth")
-template.html    # the app shell: all HTML/CSS/JS (offline), with a data-injection marker
-build.mjs        # validates content + inlines it into the shell -> index.html
-index.html       # ← the built, shippable, single-file course
+topics.json       # canonical list of all 84 topics (id, order, section, title)
+SPEC.md           # the content contract every topic follows
+content/*.json    # one file per topic — the actual lessons (the "source of truth")
+template.html     # the app shell: all HTML/CSS/JS + animations (offline), with injection markers
+vendor/gsap.min.js# vendored GSAP (MIT-friendly) — inlined into index.html at build time, no CDN
+build.mjs         # validates content, inlines GSAP + content into the shell -> index.html
+verify-build.mjs  # sanity-checks the assembled index.html the way the browser loads it
+index.html        # ← the built, shippable, single-file course
 ```
 
 To rebuild after editing any `content/*.json` or the template:

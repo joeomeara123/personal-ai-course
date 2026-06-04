@@ -107,9 +107,20 @@ if (errors.length)   { console.log(`\n${R}Errors (${errors.length}):${RST}`);   
 
 if (errors.length) { console.log(`\n${R}${B}Build FAILED — fix errors above.${RST}`); process.exit(1); }
 
-// Assemble: inject JSON into the <script type=application/json> marker.
+// Assemble.
+let template = readFileSync(join(ROOT, "template.html"), "utf8");
+
+// 1) Inline vendored GSAP (keeps the single-file/offline guarantee — no CDN).
+if (!template.includes("/*__GSAP__*/")) { console.error("template.html missing /*__GSAP__*/ marker"); process.exit(1); }
+const gsapPath = join(ROOT, "vendor", "gsap.min.js");
+if (!existsSync(gsapPath)) { console.error("vendor/gsap.min.js missing — run: curl -sL https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js -o vendor/gsap.min.js"); process.exit(1); }
+const gsap = readFileSync(gsapPath, "utf8");
+if (/<\/script/i.test(gsap)) { console.error("vendor/gsap.min.js contains </script — cannot inline safely"); process.exit(1); }
+if (/\bsrc\s*=\s*["']https?:|@import|url\(\s*["']?https?:/i.test(gsap)) { console.error("vendor/gsap.min.js references an external resource — aborting"); process.exit(1); }
+template = template.replace("/*__GSAP__*/", () => gsap);
+
+// 2) Inject JSON into the <script type=application/json> marker.
 // Escape </ as <\/ so a stray "</script>" in content can't close the tag; JSON.parse restores it.
-const template = readFileSync(join(ROOT, "template.html"), "utf8");
 const payload = JSON.stringify(topics).replace(/<\//g, "<\\/");
 if (!template.includes("/*__COURSE_DATA__*/")) { console.error("template.html missing /*__COURSE_DATA__*/ marker"); process.exit(1); }
 const out = template.replace("/*__COURSE_DATA__*/", () => payload);
