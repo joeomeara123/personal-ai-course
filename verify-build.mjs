@@ -35,6 +35,25 @@ for (const t of data) {
 ok(missing === 0, `every topic has all ${need.length} fields (missing slots: ${missing})`);
 ok(xrefBroken === 0, `all ${xrefTotal} cross-links resolve to real topics (broken: ${xrefBroken})`);
 
+// v2 fields: takeaways / diagram / quiz across all topics, + forbidden-content scan of parsed data
+let taBad = 0, dgBad = 0, qzBad = 0, qAnsBad = 0, fbHits = 0, quizTotal = 0;
+const FB = [/<script\b/i, /<style\b/i, /<iframe\b/i, /<image\b/i, /<img\b/i, /(?:src|href)\s*=\s*["']https?:/i, /@import/i, /url\(\s*["']?https?:/i];
+const scan = (s) => { if (s == null) return; const v = String(s); for (const re of FB) if (re.test(v)) fbHits++; };
+for (const t of data) {
+  if (!Array.isArray(t.takeaways) || t.takeaways.length !== 3) taBad++;
+  if (!t.diagram || !/^\s*<svg[\s>]/i.test((t.diagram && t.diagram.svg) || "")) dgBad++;
+  if (!Array.isArray(t.quiz) || t.quiz.length !== 4) qzBad++;
+  else t.quiz.forEach((q) => { quizTotal++; if (!q || !Array.isArray(q.options) || typeof q.answer !== "number" || q.answer < 0 || q.answer >= q.options.length) qAnsBad++; });
+  (t.takeaways || []).forEach(scan); scan(t.diagram && t.diagram.svg); scan(t.diagram && t.diagram.caption); scan(t.lesson); scan(t.exercise); scan(t.solution);
+  (t.mistakes || []).forEach(scan); (t.keyTerms || []).forEach((k) => scan(k && k.def));
+  (t.quiz || []).forEach((q) => { scan(q && q.q); scan(q && q.explain); (q && q.options || []).forEach(scan); });
+}
+ok(taBad === 0, `every topic has exactly 3 takeaways (bad: ${taBad})`);
+ok(dgBad === 0, `every topic has an inline <svg> diagram (bad: ${dgBad})`);
+ok(qzBad === 0, `every topic has a 4-question quiz (bad: ${qzBad})`);
+ok(qAnsBad === 0, `all ${quizTotal} quiz questions have a valid answer index (bad: ${qAnsBad})`);
+ok(fbHits === 0, `no forbidden/external content anywhere in topic data (hits: ${fbHits})`);
+
 // 4) offline guarantee on the WHOLE file (ignore in-page #anchors)
 const externals = html.match(/(?:src|href)\s*=\s*["']https?:\/\/[^"']+/gi) || [];
 ok(externals.length === 0, `no external src/href URLs (found ${externals.length})`);

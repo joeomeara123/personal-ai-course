@@ -85,3 +85,62 @@ Output an **HTML fragment** (no `<html>`, `<head>`, `<body>`). Only these tags a
 A reviewer will re-read your file and FIX it if: lesson < 650 words, fewer than 2 analogies,
 unexplained jargon, missing keys, invalid JSON, forbidden tags, or boring/generic writing.
 Aim to pass first time: vivid, concrete, genuinely clarifying.
+
+---
+
+# v2 — "Guided steps" upgrade (ADDITIONAL required fields)
+
+The course now shows each topic as a clickable stepper: ① In a nutshell ② Lesson ③ Visual
+④ Practice ⑤ Quiz — one small panel at a time. Add THREE new keys to the JSON (keep all the
+existing keys too). Also gently improve readability of `lesson` (see below).
+
+### New key: `takeaways`  — array of EXACTLY 3 short strings
+Punchy, skimmable, ≤ ~14 words each. The gist of the topic so a reader "gets it" in 10 seconds.
+Plain text or tiny inline HTML (`<strong>`, `<code>`). Example:
+`["A token is a sub-word chunk, not a whole word.", "You pay per token — input and output.", "1 token ≈ ¾ of a word."]`
+
+### New key: `diagram` — an object `{ "svg": "<inline SVG>", "caption": "one sentence" }`
+A clean, labelled **inline SVG** that visualizes the core idea (a flow, a comparison, a structure).
+- Root element: `<svg class="dg" viewBox="0 0 720 340" role="img" aria-label="...">`. Use that viewBox so it scales nicely. ~4–8 labelled nodes max. Keep it uncluttered.
+- **Do NOT hardcode colors.** Style everything with these provided classes ONLY (they adapt to light/dark):
+  - Boxes: `dg-box` (neutral), `dg-box-accent`, `dg-box-2`, `dg-box-good`, `dg-box-warn`
+  - Text: `dg-title` (heading), `dg-label` (node label), `dg-sub` (smaller), `dg-note` (muted caption)
+  - Connectors: `dg-edge` (line/path; gets an animated "draw-on"); arrowheads via the `arrow` marker below
+- Allowed SVG tags ONLY: `svg, defs, marker, g, rect, circle, ellipse, line, path, polyline, polygon, text, tspan, title`. NO `<image>`, NO `href`/`xlink:href`, NO external refs, NO `<style>`/`<script>`.
+- Always center labels with `text-anchor="middle"`. Give rects `rx="12"`.
+- Caption: one plain sentence telling the learner what the picture shows.
+
+**Copy this skeleton and adapt it** (a 3-stage pipeline). Keep the `<defs>` marker exactly:
+```
+<svg class=\"dg\" viewBox=\"0 0 720 340\" role=\"img\" aria-label=\"How tokens flow into a model\">
+  <defs><marker id=\"arrow\" markerWidth=\"12\" markerHeight=\"12\" refX=\"9\" refY=\"5\" orient=\"auto\"><path class=\"dg-arrowhead\" d=\"M0,0 L11,5 L0,10 z\"/></marker></defs>
+  <text class=\"dg-title\" x=\"360\" y=\"40\" text-anchor=\"middle\">From text to prediction</text>
+  <line class=\"dg-edge\" x1=\"200\" y1=\"170\" x2=\"280\" y2=\"170\" marker-end=\"url(#arrow)\"/>
+  <line class=\"dg-edge\" x1=\"440\" y1=\"170\" x2=\"520\" y2=\"170\" marker-end=\"url(#arrow)\"/>
+  <rect class=\"dg-box\" x=\"60\" y=\"140\" width=\"140\" height=\"60\" rx=\"12\"/>
+  <text class=\"dg-label\" x=\"130\" y=\"175\" text-anchor=\"middle\">\\\"I love AI\\\"</text>
+  <rect class=\"dg-box dg-box-accent\" x=\"280\" y=\"140\" width=\"160\" height=\"60\" rx=\"12\"/>
+  <text class=\"dg-label\" x=\"360\" y=\"168\" text-anchor=\"middle\">Tokens</text>
+  <text class=\"dg-sub\" x=\"360\" y=\"188\" text-anchor=\"middle\">[40, 1842, 9303]</text>
+  <rect class=\"dg-box dg-box-good\" x=\"520\" y=\"140\" width=\"140\" height=\"60\" rx=\"12\"/>
+  <text class=\"dg-label\" x=\"590\" y=\"175\" text-anchor=\"middle\">Next token</text>
+</svg>
+```
+Make YOUR diagram specific to YOUR topic (not this token example). Use boxes + arrows, or a
+comparison (two columns), or a simple stack/hierarchy — whatever best explains the concept.
+
+### New key: `quiz` — array of EXACTLY 4 multiple-choice questions
+Each item: `{ "q": "question?", "options": ["...","...","...","..."], "answer": <0-3 index of correct>, "explain": "1–2 sentence why" }`.
+- Exactly 4 options per question. `answer` is the 0-based index of the correct option.
+- Test real understanding (apply the idea), not trivia. Mix easy → harder. Make wrong options plausible.
+- Keep `explain` short and teach why the right answer is right (and ideally why a tempting wrong one is wrong).
+
+### Improve `lesson` readability (rework, don't lengthen)
+Keep it 700–900 words but make it **less of a wall of text**: short paragraphs (2–4 sentences),
+use `<h4>` sub-headings to break sections, and prefer `<ul><li>` bullets for lists of points.
+Keep the analogies and the code. The goal is "scannable and friendly", not "denser".
+
+### When EDITING an existing file
+Read the current JSON, KEEP all existing good content (don't drop fields), keep id/order/section/title
+verbatim, ADD `takeaways`, `diagram`, `quiz`, and lightly re-flow `lesson` for readability. Output the
+full, valid JSON with ALL keys (old + new).

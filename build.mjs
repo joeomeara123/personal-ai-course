@@ -18,6 +18,7 @@ const FORBIDDEN = [
   [/<iframe\b/i, "<iframe> tag"],
   [/<link\b/i, "<link> tag"],
   [/<img\b/i, "<img> tag (external/asset)"],
+  [/<image\b/i, "<image> tag (external SVG asset)"],
   [/\bsrc\s*=\s*["']https?:/i, "external src= URL"],
   [/\bhref\s*=\s*["']https?:/i, "external href= URL"],
   [/@import/i, "@import"],
@@ -31,11 +32,17 @@ function words(html) {
   return String(html).replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/gi, " ").trim().split(/\s+/).filter(Boolean).length;
 }
 function htmlFields(t) {
-  // every string value that may contain HTML
+  // every string value that may contain HTML / SVG
   const out = [["lesson", t.lesson], ["mentalModel", t.mentalModel], ["exercise", t.exercise],
               ["solution", t.solution || ""], ["summary", t.summary]];
   (t.mistakes || []).forEach((m, i) => out.push([`mistakes[${i}]`, m]));
   (t.keyTerms || []).forEach((k, i) => out.push([`keyTerms[${i}].def`, k && k.def]));
+  (t.takeaways || []).forEach((m, i) => out.push([`takeaways[${i}]`, m]));
+  if (t.diagram) { out.push(["diagram.svg", t.diagram.svg]); out.push(["diagram.caption", t.diagram.caption]); }
+  (t.quiz || []).forEach((q, i) => {
+    out.push([`quiz[${i}].q`, q && q.q]); out.push([`quiz[${i}].explain`, q && q.explain]);
+    (q && q.options || []).forEach((o, j) => out.push([`quiz[${i}].options[${j}]`, o]));
+  });
   return out;
 }
 
@@ -71,6 +78,20 @@ for (const exp of expected) {
   if ((t.mistakes || []).length < 5) warnings.push(`${exp.id}: only ${(t.mistakes||[]).length} mistakes (target 5–6)`);
   if ((t.keyTerms || []).length < 6) warnings.push(`${exp.id}: only ${(t.keyTerms||[]).length} key terms (target 6+)`);
   if (!t.solution) warnings.push(`${exp.id}: no solution/hint provided`);
+
+  // v2 fields: warn if absent (transition), but malformed quiz answers are hard errors
+  if (!Array.isArray(t.takeaways) || t.takeaways.length !== 3) warnings.push(`${exp.id}: takeaways should be exactly 3 (got ${(t.takeaways || []).length})`);
+  if (!t.diagram || !t.diagram.svg) warnings.push(`${exp.id}: no diagram.svg`);
+  else if (!/^\s*<svg[\s>]/i.test(t.diagram.svg)) errors.push(`${exp.id}: diagram.svg does not start with <svg>`);
+  if (!Array.isArray(t.quiz) || t.quiz.length === 0) warnings.push(`${exp.id}: no quiz`);
+  else {
+    if (t.quiz.length !== 4) warnings.push(`${exp.id}: quiz should have 4 questions (got ${t.quiz.length})`);
+    t.quiz.forEach((q, i) => {
+      if (!q || !q.q || !Array.isArray(q.options) || q.options.length < 2) { errors.push(`${exp.id}: quiz[${i}] malformed (need q + >=2 options)`); return; }
+      if (typeof q.answer !== "number" || q.answer < 0 || q.answer >= q.options.length) errors.push(`${exp.id}: quiz[${i}].answer ${q.answer} out of range (0..${q.options.length - 1})`);
+      if (!q.explain) warnings.push(`${exp.id}: quiz[${i}] has no explanation`);
+    });
+  }
 
   for (const [field, val] of htmlFields(t)) {
     if (val == null) continue;

@@ -3,9 +3,14 @@
 A **self-contained, offline, interactive course** that teaches modern LLM engineering and
 fine-tuning from **absolute beginner to advanced**, in plain everyday English.
 
-**84 topics across 11 sections.** Every topic has a **lesson** (with daily-life analogies,
-worked examples, and code snippets), a **mental model**, **common mistakes to avoid**, a
-hands-on **exercise** (with a reveal-able hint), a **summary**, and a **key-terms glossary**.
+**84 topics across 11 sections.** Each topic is a **guided stepper** you click through —
+one bite-sized panel at a time, so it never feels like a wall of text:
+
+1. **✨ In a nutshell** — 3 skimmable takeaways + a mental model
+2. **📖 Lesson** — plain-English explanation (analogies, worked examples, code), plus a summary & key-terms glossary
+3. **🖼️ Visual** — a custom, animated **SVG diagram** of the core idea
+4. **🛠️ Practice** — common mistakes to avoid + a hands-on exercise with a reveal-able hint
+5. **✅ Quiz** — 4 multiple-choice questions with instant feedback; **score 3/4 and the topic auto-completes** 🎉
 
 ## ✨ How to use it
 
@@ -19,10 +24,13 @@ hands-on **exercise** (with a reveal-able hint), a **summary**, and a **key-term
 > **Export progress** / **Import** buttons in the sidebar to carry your checkmarks across.
 
 ### Features
-- ✅ Progress bar + per-section completion counts, mark-complete toggles
-- 🎉 Delightful GSAP animations: staggered lesson reveal, animated count-up progress bar, a confetti burst when you complete a topic, a toast when you finish a section, and a full celebration when you finish all 84
-- 💾 Auto-save & resume (last topic, completed topics, collapsed sections, theme)
-- 🔎 Instant topic search · ⌨️ arrow-key navigation (← / →)
+- 🧭 **Guided steps** per topic (Nutshell → Lesson → Visual → Practice → Quiz) — learn in small chunks, not a wall of text
+- 🖼️ A **custom animated SVG diagram** for every topic (theme-aware, draws itself in)
+- ✅ **Interactive quizzes** — 4 questions per topic, instant feedback + explanations, best score saved, pass to auto-complete
+- 📊 Progress bar + per-section completion counts, mark-complete toggles
+- 🎉 Delightful GSAP animations: staggered panel reveals, animated count-up progress bar, a confetti burst when you complete a topic, a toast when you finish a section, and a full celebration when you finish all 84
+- 💾 Auto-save & resume (last topic, completed topics, quiz scores, collapsed sections, theme)
+- 🔎 Instant topic search · ⌨️ arrow-key navigation (← / → moves through the steps)
 - 🌙 Light / dark theme · 📱 works on phone & desktop
 - ♿ Respects `prefers-reduced-motion` (animations gracefully turn off)
 - 🔌 100% offline — zero external requests, zero dependencies (GSAP is bundled *inline*, not from a CDN)
@@ -46,7 +54,7 @@ and regenerate:
 ```
 topics.json       # canonical list of all 84 topics (id, order, section, title)
 SPEC.md           # the content contract every topic follows
-content/*.json    # one file per topic — the actual lessons (the "source of truth")
+content/*.json    # one file per topic (lesson, takeaways, mental model, diagram SVG, mistakes, exercise, quiz, key terms) — the "source of truth"
 template.html     # the app shell: all HTML/CSS/JS + animations (offline), with injection markers
 vendor/gsap.min.js# vendored GSAP (MIT-friendly) — inlined into index.html at build time, no CDN
 build.mjs         # validates content, inlines GSAP + content into the shell -> index.html
