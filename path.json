@@ -1,0 +1,110 @@
+{
+  "title": "Your path to AI Engineer / FDE",
+  "subtitle": "Three levels, ~90 days, zero to shipping. The bottleneck isn't courses — it's building something real.",
+  "levels": [
+    {
+      "id": "learn",
+      "title": "Learn",
+      "subtitle": "Foundations & literacy",
+      "tagline": "Build the mental model and the vocabulary. Speak AI before you write a line of code.",
+      "intro": "What a model actually is, how it reads text, and how to talk to it. By the end you can hold your own in any AI conversation and write prompts that genuinely work.",
+      "days": "Days 1–14",
+      "resources": [
+        { "title": "AI for Everyone", "provider": "DeepLearning.AI · Andrew Ng", "url": "https://www.deeplearning.ai/courses/ai-for-everyone/", "note": "No code, no math. The best first course — about 6 hours. Free." },
+        { "title": "Google AI Essentials", "provider": "Coursera · Google", "url": "https://www.coursera.org/learn/google-ai-essentials", "note": "Free, with a certificate HR recognises. ~10 hours." },
+        { "title": "Anthropic Academy", "provider": "Anthropic", "url": "https://anthropic.skilljar.com", "note": "Claude courses written by the people who built it. Free + cert." }
+      ],
+      "capstone": {
+        "id": "cap-learn",
+        "title": "Prompt-Powered Personal Assistant",
+        "goal": "Build a tiny script (or a no-code automation) that calls an LLM API to automate ONE real task in your week — summarising your inbox, turning meeting notes into action items, or drafting replies in your voice.",
+        "why": "The fastest way to make tokens, context windows and prompting click is to feel them in something you actually use. This proves an LLM is just an API you can call — and that prompting is engineering, not magic.",
+        "steps": [
+          "Pick one repetitive task you do every week.",
+          "Get an API key (Anthropic or OpenAI) and make a single call from a script or a no-code tool.",
+          "Write a deliberate <strong>system prompt</strong> that sets the role, the rules, and the output format.",
+          "Feed it real input and iterate on the prompt until the output is genuinely useful.",
+          "Handle one failure case (empty input, input that's too long, or a weird answer)."
+        ],
+        "definitionOfDone": [
+          "It runs end-to-end on your real data.",
+          "It has a thought-through system prompt, not just one line.",
+          "It degrades gracefully on at least one bad input.",
+          "You've actually used it 3+ times."
+        ],
+        "skills": ["LLM APIs", "Prompting", "System prompts", "Context budgeting"],
+        "drawsOn": ["llm-basics", "tokens", "context-windows", "prompt-engineering", "system-prompts"]
+      }
+    },
+    {
+      "id": "build",
+      "title": "Build",
+      "subtitle": "Applied skills & the open-source stack",
+      "tagline": "Get your hands dirty: run models locally, fine-tune them, and wire up retrieval and agents.",
+      "intro": "The longest stretch. You move from talking about models to building with them — the Hugging Face stack, local inference, LoRA/QLoRA fine-tuning, RAG, and tool-using agents. This is where most real AI engineering actually happens.",
+      "days": "Days 15–45",
+      "resources": [
+        { "title": "Prompt Engineering for Developers", "provider": "DeepLearning.AI · OpenAI · Andrew Ng", "url": "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/", "note": "One hour, zero fluff, live code examples. Free." },
+        { "title": "Hugging Face LLM Course", "provider": "Hugging Face", "url": "https://huggingface.co/learn/llm-course", "note": "The open-source LLM stack, taught by the engineers who built the libraries. Free." },
+        { "title": "Practical Deep Learning", "provider": "fast.ai · Jeremy Howard", "url": "https://course.fast.ai", "note": "Code-first, no math gatekeeping. Zero to fine-tuning real models. Free." }
+      ],
+      "capstone": {
+        "id": "cap-build",
+        "title": "RAG Tool Over Your Own Documents",
+        "goal": "Build a local question-answering tool over a set of documents YOU own (your notes, a PDF library, a codebase): chunk → embed → store in a vector database → retrieve → answer with citations. Optionally fine-tune a small LoRA for tone.",
+        "why": "RAG is the single most in-demand AI-engineering skill in 2026. Building one end-to-end forces you to understand embeddings, chunking, retrieval quality and local inference — the heart of the open-source stack.",
+        "steps": [
+          "Collect a corpus you actually care about and chunk it sensibly.",
+          "Embed the chunks and store them in a vector database.",
+          "Retrieve the top-k relevant chunks for a question and feed them to the model.",
+          "Make every answer cite the chunks it used.",
+          "Run it fully local via <strong>Ollama</strong> or <strong>llama.cpp</strong> — no paid API.",
+          "Stretch goal: fine-tune a small <strong>LoRA / QLoRA</strong> adapter to match a voice or domain."
+        ],
+        "definitionOfDone": [
+          "Answers are grounded in your docs and cite their sources.",
+          "It runs locally with no paid API required.",
+          "You measured retrieval quality on ~10 test questions.",
+          "You can explain why you chose your chunk size and top-k."
+        ],
+        "skills": ["RAG", "Embeddings", "Vector DBs", "Local inference", "LoRA / QLoRA"],
+        "drawsOn": ["rag", "chunking", "embeddings", "vector-databases", "retrieval-pipelines", "ollama", "hugging-face", "lora", "qlora", "peft"]
+      }
+    },
+    {
+      "id": "ship",
+      "title": "Ship",
+      "subtitle": "Advanced engineering & productionisation",
+      "tagline": "Build a real agent, evaluate it, deploy it, and hand it off like an FDE would.",
+      "intro": "The forward-deployed finish line. You take a multi-step agent from prototype to something you'd put in front of a client: tool-calling, an eval harness, a cost/latency budget, a deployment, and a clean handoff. This is what separates a demo from a product.",
+      "days": "Days 46–90",
+      "resources": [
+        { "title": "LLM Engineering", "provider": "Udemy", "url": "https://www.udemy.com/course/llm-engineering-master-ai-and-large-language-models/", "note": "The most hands-on production course: RAG, QLoRA and agents that work. Paid." },
+        { "title": "AI Engineer Career Track", "provider": "DataCamp", "url": "https://www.datacamp.com/tracks/associate-ai-engineer-for-developers", "note": "Career-mapped to the 2026 AI-engineer role. Paid." },
+        { "title": "CS229 + CS224N", "provider": "Stanford Online · YouTube", "url": "https://www.youtube.com/@stanfordonline", "note": "The ML & NLP foundations everything else is built on. Rigorous, free, timeless. Start with CS229." }
+      ],
+      "capstone": {
+        "id": "cap-ship",
+        "title": "A Production Agent You'd Hand a Client",
+        "goal": "Build a multi-step agent that does a real job — research, triage, code edits, support — and wrap it so someone else could run it. Expose it as an <strong>MCP server</strong> and/or drive it from <strong>Claude Code</strong>, add an eval harness, and write a one-page handoff.",
+        "why": "This is the Forward-Deployed Engineer's job in miniature: not a demo, but a tool that's measured, costed, deployed and documented. MCP and Claude Code are how modern agents plug into real workflows.",
+        "steps": [
+          "Define one real job and the tools the agent needs (search, files, a calculator, an API).",
+          "Implement <strong>tool-calling</strong>; add a planner or a second agent if the job needs it.",
+          "Wrap it as an <strong>MCP server</strong> or a <strong>Claude Code</strong> workflow so others can run it.",
+          "Build an <strong>eval set</strong> of 10–20 cases with clear pass/fail.",
+          "Measure cost-per-task and latency; set a budget and stay under it.",
+          "Deploy it (an API endpoint or a one-command package) and write a one-page client handoff."
+        ],
+        "definitionOfDone": [
+          "An eval set with a real pass-rate number.",
+          "A measured cost-per-task and p95 latency.",
+          "A deployed or one-command-runnable artifact.",
+          "A one-page handoff doc a non-author could follow."
+        ],
+        "skills": ["Agents", "Tool calling", "MCP servers", "Claude Code", "Evals / LLMOps", "Deployment", "Client handoff"],
+        "drawsOn": ["ai-agents", "tool-calling", "multi-agent-systems", "api-serving", "human-evals", "cost-per-token", "ai-product-thinking"]
+      }
+    }
+  ]
+}

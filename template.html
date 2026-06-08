@@ -213,9 +213,72 @@
   .celebrate p{margin:0 0 18px;color:var(--muted)}
   .celebrate button{appearance:none;border:0;cursor:pointer;font-weight:750;font-size:15px;padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--accent-ink)}
 
+  /* view toggle */
+  .viewtoggle{display:inline-flex;gap:2px;background:var(--bg-elev2);border:1px solid var(--border);border-radius:99px;padding:3px}
+  .viewtoggle button{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:750;padding:6px 13px;border-radius:99px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .15s,background .15s}
+  .viewtoggle button.on{color:var(--accent-ink);background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+  .viewtoggle button:not(.on):hover{color:var(--text)}
+
+  /* Path view */
+  .path-sub{color:var(--muted);font-size:15px;margin:0 0 26px}
+  .level{position:relative;margin:0 0 18px;padding-left:32px}
+  .level::before{content:"";position:absolute;left:9px;top:8px;bottom:-18px;width:2px;background:linear-gradient(var(--accent),var(--accent-2));opacity:.35}
+  .level:last-child::before{display:none}
+  .level > .node{position:absolute;left:0;top:6px;width:20px;height:20px;border-radius:50%;background:var(--bg-elev2);border:2px solid var(--accent);display:grid;place-items:center;font-size:10px;font-weight:800;color:var(--accent);z-index:1}
+  .level.done > .node{background:linear-gradient(135deg,var(--good),var(--accent-3));border-color:transparent;color:#04130c}
+  .level-card{border:1px solid var(--border);border-radius:18px;background:var(--card);overflow:hidden}
+  .level.locked{opacity:.62}
+  .level-head{padding:16px 18px;border-bottom:1px solid var(--border-soft);background:var(--bg-elev2)}
+  .level-head .lh-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .level-head h2{margin:0;font-size:21px;letter-spacing:-.3px}
+  .level-head .lh-sub{color:var(--muted);font-weight:600;font-size:13px}
+  .level-head .days{margin-left:auto;font-size:11px;font-weight:800;color:var(--accent-2);background:color-mix(in srgb,var(--accent-2) 14%,transparent);padding:3px 10px;border-radius:99px}
+  .level-head .tagline{margin:8px 0 0;font-size:13.5px;color:var(--muted)}
+  .lp-bar{height:7px;border-radius:99px;background:var(--bg-elev-solid);overflow:hidden;margin-top:12px;border:1px solid var(--border-soft)}
+  .lp-bar > i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-3))}
+  .lp-meta{display:flex;align-items:center;gap:8px;margin-top:7px;font-size:12px;color:var(--faint);font-weight:700}
+  .level-body{padding:14px 18px 18px}
+  .nextup{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
+  .nextup .go{appearance:none;border:1px solid transparent;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--accent-ink);font-weight:750;font-size:14px;padding:11px 17px;border-radius:12px;transition:transform .12s,filter .15s;text-align:left}
+  .nextup .go:hover{filter:brightness(1.07);transform:translateY(-2px)}
+  .nextup .lab{color:var(--muted);font-size:13px}
+  .lvl-toplink{appearance:none;background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;font-size:12.5px;font-weight:750;padding:0;margin-bottom:4px}
+  .lvl-topics{margin:6px 0 4px;display:flex;flex-direction:column;gap:1px;overflow:hidden}
+  .lvl-topics.collapsed{display:none}
+  .proj{margin-top:14px;border:1px solid color-mix(in srgb,var(--good) 30%,var(--border));border-radius:16px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--good) 8%,var(--card)),var(--card))}
+  .proj .ph{display:flex;align-items:center;gap:9px;padding:12px 16px;font-weight:800;font-size:14px;border-bottom:1px solid var(--border-soft);background:color-mix(in srgb,var(--good) 12%,transparent);color:var(--good)}
+  .proj .ph .tag{margin-left:auto;font-size:10px;font-weight:800;color:var(--muted);background:var(--bg-elev2);padding:2px 9px;border-radius:99px;letter-spacing:.3px}
+  .proj .pb{padding:14px 16px}
+  .proj h3{margin:0 0 6px;font-size:18px}
+  .proj .goal{margin:0 0 10px;font-size:15px}
+  .proj .why{margin:0 0 12px;font-size:13.5px;color:var(--muted)}
+  .proj h4{margin:14px 0 7px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:var(--accent)}
+  .proj ol{margin:0;padding-left:20px} .proj ol li{margin:5px 0;font-size:14.5px}
+  .dod{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+  .dod li{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14.5px;padding:8px 11px;border:1px solid var(--border);border-radius:10px;background:var(--bg-elev2);transition:border-color .15s}
+  .dod li:hover{border-color:var(--good)}
+  .dod li .box{flex:none;width:18px;height:18px;border-radius:5px;border:2px solid var(--faint);display:grid;place-items:center;font-size:11px;margin-top:1px;transition:all .15s}
+  .dod li.on .box{background:var(--good);border-color:transparent;color:#04130c}
+  .dod li.on{color:var(--faint)}
+  .skills{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .skill{font-size:11px;font-weight:700;color:var(--accent-2);background:color-mix(in srgb,var(--accent-2) 13%,transparent);padding:3px 9px;border-radius:99px}
+  .drawson{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+  .drawson .dl{font-size:11px;color:var(--faint);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-right:2px}
+  .ship-btn{margin-top:16px}
+  .resources{margin-top:16px}
+  .resources h4{margin:0 0 8px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+  .res{padding:9px 0;border-top:1px solid var(--border-soft)}
+  .res:first-of-type{border-top:0}
+  .res .rt{font-weight:700;font-size:14px}
+  .res .rp{color:var(--muted);font-size:12px;margin-left:6px}
+  .res .rn{color:var(--muted);font-size:12.5px;margin:2px 0 3px}
+  .res .ru{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:var(--accent-2);background:var(--bg-elev2);padding:2px 7px;border-radius:6px;user-select:all;word-break:break-all}
+
   .scrim{display:none}
   @media (max-width:880px){
     .menu-btn{display:grid}
+    .viewtoggle .vt-label{display:none}
+    .viewtoggle button{padding:6px 10px}
     .shell{grid-template-columns:1fr}
     nav.side{position:fixed;z-index:50;top:61px;bottom:0;left:0;width:300px;transform:translateX(-104%);transition:transform .25s ease;box-shadow:var(--shadow);background:var(--bg-elev-solid)}
     body.nav-open nav.side{transform:none}
@@ -239,6 +302,10 @@
     <div class="progress-wrap">
       <div class="bar" aria-label="Course progress"><i id="barFill"></i></div>
       <span class="pct" id="pctLabel">0 / 0 · 0%</span>
+    </div>
+    <div class="viewtoggle" id="viewToggle">
+      <button type="button" data-view="path"><span>🗺</span><span class="vt-label">Path</span></button>
+      <button type="button" data-view="topics"><span>📚</span><span class="vt-label">Topics</span></button>
     </div>
     <div class="htools"><button class="icon" id="themeBtn" aria-label="Toggle theme" title="Toggle light/dark">🌙</button></div>
   </header>
@@ -264,6 +331,7 @@
 
   <script>/*__GSAP__*/</script>
   <script id="course-data" type="application/json">/*__COURSE_DATA__*/</script>
+  <script id="path-data" type="application/json">/*__PATH_DATA__*/</script>
   <script>
   (function(){
     "use strict";
@@ -272,6 +340,9 @@
     catch(e){ DATA = []; console.error('Course data failed to parse:', e); }
     DATA.sort(function(a,b){ return a.order - b.order; });
 
+    var PATH = {}; try { PATH = JSON.parse(document.getElementById('path-data').textContent || '{}'); } catch(e){ PATH = {}; }
+    var PLEVELS = PATH.levels || [];
+
     var G = window.gsap || null;
     var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var ANIM = !!G && !reduceMotion;
@@ -279,13 +350,14 @@
     var LS = 'paic.v1';
     var byId = {}; DATA.forEach(function(t){ byId[t.id] = t; });
 
-    var state = { completed:{}, current:null, theme:null, collapsed:{}, quizScores:{} };
+    var state = { completed:{}, current:null, theme:null, collapsed:{}, quizScores:{}, view:null, projects:{} };
     try {
       var saved = JSON.parse(localStorage.getItem(LS) || '{}');
       if(saved && typeof saved === 'object'){
         state.completed = saved.completed || {}; state.current = saved.current || null;
         state.theme = saved.theme || null; state.collapsed = saved.collapsed || {};
         state.quizScores = saved.quizScores || {};
+        state.view = saved.view || null; state.projects = saved.projects || {};
       }
     } catch(e){}
     function save(){ try { localStorage.setItem(LS, JSON.stringify(state)); } catch(e){} }
@@ -296,6 +368,14 @@
     if(!state.theme){ state.theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark'; }
     applyTheme(state.theme);
     document.getElementById('themeBtn').onclick = function(){ state.theme = (state.theme === 'light') ? 'dark' : 'light'; applyTheme(state.theme); save(); if(ANIM) G.fromTo('#themeBtn',{rotation:-30,scale:.8},{rotation:0,scale:1,duration:.5,ease:'back.out(2)'}); };
+
+    // view toggle (Path ⇄ Topics) — drives the hash, route() does the rendering
+    function updateToggle(){ var vt = document.getElementById('viewToggle'); if(!vt) return; [].forEach.call(vt.querySelectorAll('button'), function(b){ b.classList.toggle('on', b.dataset.view === state.view); }); }
+    document.getElementById('viewToggle').addEventListener('click', function(e){
+      var b = e.target && e.target.closest ? e.target.closest('button[data-view]') : null; if(!b) return;
+      if(b.dataset.view === 'path'){ if(location.hash !== '#/path'){ location.hash = '#/path'; } else { route(); } }
+      else { var id = (state.current && byId[state.current]) ? state.current : (DATA[0] && DATA[0].id); if(location.hash !== '#'+id){ location.hash = '#'+id; } else { route(); } }
+    });
 
     var sections = []; DATA.forEach(function(t){ if(sections.indexOf(t.section) < 0) sections.push(t.section); });
     var navEl = document.getElementById('nav'); var navItems = {}, secEls = {};
@@ -543,15 +623,108 @@
       else { card.style.opacity=1; card.style.transform='none'; }
     }
 
-    // navigation
-    function go(id){
-      if(!byId[id]) return; state.current = id; save();
-      var sec = byId[id].section;
-      if(state.collapsed[sec]){ state.collapsed[sec]=false; save(); var s=secEls[sec]; if(s){ s.wrap.classList.remove('collapsed'); s.list.style.display=''; s.list.style.height=''; } }
-      if(location.hash !== '#'+id){ location.hash = '#'+id; } else { render(id); setActiveNav(); }
-      setActiveNav();
+    // ---- Path / roadmap view ----
+    function levelTopics(levelId){ return DATA.filter(function(t){ return t.level === levelId; }).sort(function(a,b){ return (a.pathOrder||0)-(b.pathOrder||0); }); }
+
+    function renderPath(){
+      document.getElementById('main').scrollTop = 0;
+      if(!PLEVELS.length){ contentEl.innerHTML = '<div class="empty">No path data available.</div>'; return; }
+      var html = '<div class="crumb"><span class="badge">Roadmap</span><span class="badge n">' + doneCount() + ' / ' + DATA.length + ' topics done</span></div>' +
+        '<h1 class="ttl">' + esc(PATH.title || 'Your learning path') + '</h1>' +
+        (PATH.subtitle ? '<p class="path-sub">' + esc(PATH.subtitle) + '</p>' : '');
+
+      PLEVELS.forEach(function(level, idx){
+        var topics = levelTopics(level.id);
+        var doneN = topics.filter(function(t){ return state.completed[t.id]; }).length;
+        var pct = topics.length ? Math.round(doneN/topics.length*100) : 0;
+        var levelDone = topics.length > 0 && doneN === topics.length;
+        var locked = false;
+        if(idx > 0){ var prev = levelTopics(PLEVELS[idx-1].id); var pd = prev.filter(function(t){ return state.completed[t.id]; }).length; locked = prev.length && (pd/prev.length) < 0.7; }
+        var nextInLevel = null; for(var k=0;k<topics.length;k++){ if(!state.completed[topics[k].id]){ nextInLevel = topics[k]; break; } }
+
+        var rows = topics.map(function(t){ return '<div class="tl' + (state.completed[t.id]?' done':'') + '" data-go="' + t.id + '"><span class="dot">' + (state.completed[t.id]?'✓':'') + '</span><span class="label">' + esc(t.title) + '</span></div>'; }).join('');
+
+        var c = level.capstone || {}; var proj = state.projects[c.id] || {};
+        var steps = (c.steps||[]).map(function(s){ return '<li>'+s+'</li>'; }).join('');
+        var dod = (c.definitionOfDone||[]).map(function(d,i){ var on = proj.steps && proj.steps[i]; return '<li class="'+(on?'on':'')+'" data-proj="'+c.id+'" data-dod="'+i+'"><span class="box">'+(on?'✓':'')+'</span><span>'+d+'</span></li>'; }).join('');
+        var skills = (c.skills||[]).map(function(s){ return '<span class="skill">'+esc(s)+'</span>'; }).join('');
+        var draws = (c.drawsOn||[]).filter(function(id){ return byId[id]; }).map(function(id){ return '<a class="xref" href="#'+id+'">'+esc(byId[id].title)+'</a>'; }).join('');
+        var shipped = !!proj.done;
+        var resources = (level.resources||[]).map(function(r){ return '<div class="res"><div><span class="rt">'+esc(r.title)+'</span><span class="rp">'+esc(r.provider||'')+'</span></div>'+(r.note?'<div class="rn">'+esc(r.note)+'</div>':'')+'<span class="ru">'+esc(r.url)+'</span></div>'; }).join('');
+
+        html += '<div class="level'+(levelDone?' done':'')+(locked?' locked':'')+'" data-level="'+level.id+'">'+
+          '<div class="node">'+(levelDone?'✓':(idx+1))+'</div>'+
+          '<div class="level-card">'+
+            '<div class="level-head"><div class="lh-top"><h2>'+esc(level.title)+'</h2><span class="lh-sub">'+esc(level.subtitle||'')+'</span>'+(level.days?'<span class="days">'+esc(level.days)+'</span>':'')+'</div>'+
+              (level.tagline?'<p class="tagline">'+esc(level.tagline)+'</p>':'')+
+              '<div class="lp-bar"><i style="width:'+pct+'%"></i></div>'+
+              '<div class="lp-meta"><span>'+doneN+' / '+topics.length+' topics</span><span>·</span><span>'+pct+'%</span></div>'+
+            '</div>'+
+            '<div class="level-body">'+
+              (locked?'<p class="path-sub" style="margin:0 0 12px">🔒 Recommended once you\'ve mostly finished the level above — but you can dive in anytime.</p>':'')+
+              '<div class="nextup">'+(nextInLevel?'<button type="button" class="go" data-go="'+nextInLevel.id+'">▶ '+(doneN?'Continue':'Start here')+': '+esc(nextInLevel.title)+'</button><span class="lab">topic '+(doneN+1)+' of '+topics.length+'</span>':'<span class="lab">✓ Every topic in this level is complete.</span>')+'</div>'+
+              '<button type="button" class="lvl-toplink" data-toggle="'+level.id+'">Show all '+topics.length+' topics ▾</button>'+
+              '<div class="lvl-topics collapsed" data-topics="'+level.id+'">'+rows+'</div>'+
+              '<div class="proj"><div class="ph">🛠️ Capstone project<span class="tag">SHIP SOMETHING REAL</span></div><div class="pb">'+
+                '<h3>'+esc(c.title||'')+'</h3>'+
+                '<p class="goal">'+(c.goal||'')+'</p>'+
+                (c.why?'<p class="why">'+c.why+'</p>':'')+
+                (steps?'<h4>How to build it</h4><ol>'+steps+'</ol>':'')+
+                (dod?'<h4>Definition of done</h4><ul class="dod">'+dod+'</ul>':'')+
+                (skills?'<div class="skills">'+skills+'</div>':'')+
+                (draws?'<div class="drawson"><span class="dl">Draws on</span>'+draws+'</div>':'')+
+                '<div class="ship-btn"><button type="button" class="complete'+(shipped?' is-done':'')+'" data-ship="'+c.id+'"><span class="cmark">'+(shipped?'✓':'🚀')+'</span>'+(shipped?'Shipped — click to undo':'Mark this project shipped')+'</button></div>'+
+              '</div></div>'+
+              (resources?'<div class="resources"><h4>📚 Curated courses for this level</h4>'+resources+'</div>':'')+
+            '</div>'+
+          '</div>'+
+        '</div>';
+      });
+
+      contentEl.innerHTML = html;
+      [].forEach.call(contentEl.querySelectorAll('[data-go]'), function(el){ el.onclick = function(){ go(el.getAttribute('data-go')); closeNav(); }; });
+      [].forEach.call(contentEl.querySelectorAll('a.xref'), function(a){ a.onclick = function(ev){ ev.preventDefault(); var hid=(a.getAttribute('href')||'').replace('#',''); if(byId[hid]) go(hid); }; });
+      [].forEach.call(contentEl.querySelectorAll('[data-toggle]'), function(el){ el.onclick = function(){ var box = contentEl.querySelector('[data-topics="'+el.getAttribute('data-toggle')+'"]'); var col = box.classList.toggle('collapsed'); el.textContent = (col?'Show all ':'Hide ')+box.children.length+' topics '+(col?'▾':'▴'); if(!col && ANIM) G.from(box,{height:0,opacity:0,duration:.3,ease:'power2.out'}); }; });
+      [].forEach.call(contentEl.querySelectorAll('.dod li'), function(li){ li.onclick = function(){ var pid=li.getAttribute('data-proj'), di=+li.getAttribute('data-dod'); state.projects[pid]=state.projects[pid]||{}; state.projects[pid].steps=state.projects[pid].steps||{}; var on=!state.projects[pid].steps[di]; if(on) state.projects[pid].steps[di]=1; else delete state.projects[pid].steps[di]; save(); li.classList.toggle('on',on); li.querySelector('.box').textContent=on?'✓':''; }; });
+      [].forEach.call(contentEl.querySelectorAll('[data-ship]'), function(btn){ btn.onclick = function(){ shipProject(btn.getAttribute('data-ship'), btn); }; });
+
+      if(ANIM){ G.killTweensOf(['.crumb','h1.ttl','.path-sub','.level']);
+        var tl = G.timeline({defaults:{ease:'power3.out'}});
+        tl.from('.crumb',{y:12,opacity:0,duration:.3}).from('h1.ttl',{y:18,opacity:0,duration:.45},'-=.15').from('.path-sub',{y:12,opacity:0,duration:.4},'-=.28').from('.level',{y:24,opacity:0,duration:.5,stagger:.12},'-=.2'); }
     }
-    window.addEventListener('hashchange', function(){ var id = location.hash.replace('#',''); if(byId[id]){ state.current = id; save(); render(id); setActiveNav(); } });
+
+    function shipProject(pid, btn){
+      state.projects[pid] = state.projects[pid] || {};
+      var now = !state.projects[pid].done;
+      if(now) state.projects[pid].done = 1; else delete state.projects[pid].done;
+      save();
+      btn.classList.toggle('is-done', now);
+      btn.innerHTML = '<span class="cmark">'+(now?'✓':'🚀')+'</span>'+(now?'Shipped — click to undo':'Mark this project shipped');
+      if(now){
+        if(ANIM){ G.fromTo(btn,{scale:.92},{scale:1,duration:.5,ease:'elastic.out(1,.5)'}); var r=btn.getBoundingClientRect(); burst(r.left+r.width/2, r.top+r.height/2, {n:34}); pulseBar(); }
+        toast('Capstone shipped! 🚀');
+        var allShipped = PLEVELS.length && PLEVELS.every(function(l){ return l.capstone && state.projects[l.capstone.id] && state.projects[l.capstone.id].done; });
+        if(allShipped) celebrate();
+      }
+    }
+
+    // navigation + routing (Path vs a single Topic)
+    function go(id){
+      if(!byId[id]) return; state.current = id; state.view = 'topics';
+      var sec = byId[id].section;
+      if(state.collapsed[sec]){ state.collapsed[sec]=false; var s=secEls[sec]; if(s){ s.wrap.classList.remove('collapsed'); s.list.style.display=''; s.list.style.height=''; } }
+      save();
+      if(location.hash !== '#'+id){ location.hash = '#'+id; } else { route(); }
+    }
+    function route(){
+      var h = location.hash || '';
+      if(h.indexOf('#/path') === 0){ state.view='path'; save(); updateToggle(); setActiveNav(); renderPath(); return; }
+      var id = h.replace('#','');
+      if(byId[id]){ state.view='topics'; state.current=id; save(); updateToggle(); setActiveNav(); render(id); return; }
+      if(state.view==='topics' && state.current && byId[state.current]){ updateToggle(); setActiveNav(); render(state.current); }
+      else { state.view='path'; save(); updateToggle(); setActiveNav(); renderPath(); }
+    }
+    window.addEventListener('hashchange', route);
 
     // search
     document.getElementById('search').addEventListener('input', function(e){
@@ -567,14 +740,15 @@
     // footer buttons
     document.getElementById('expandAll').onclick = function(){ sections.forEach(function(s){ if(state.collapsed[s]) toggleSection(s); }); };
     document.getElementById('collapseAll').onclick = function(){ sections.forEach(function(s){ if(!state.collapsed[s]) toggleSection(s); }); };
-    document.getElementById('resetBtn').onclick = function(){ if(confirm('Reset ALL progress? This clears every completed topic and quiz score on this device.')){ state.completed = {}; state.quizScores = {}; save(); for(var k in navItems) updateNavItem(k); setActiveNav(); progress(true); if(state.current) render(state.current); } };
+    document.getElementById('resetBtn').onclick = function(){ if(confirm('Reset ALL progress? This clears every completed topic, quiz score and project on this device.')){ state.completed = {}; state.quizScores = {}; state.projects = {}; save(); for(var k in navItems) updateNavItem(k); progress(true); route(); } };
     document.getElementById('exportBtn').onclick = function(){ var blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'}); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'ai-course-progress.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); };
     document.getElementById('importBtn').onclick = function(){ var inp = document.createElement('input'); inp.type='file'; inp.accept='application/json,.json';
       inp.onchange = function(){ var f = inp.files[0]; if(!f) return; var r = new FileReader();
         r.onload = function(){ try { var obj = JSON.parse(r.result);
           if(obj.completed) state.completed = obj.completed; if(obj.collapsed) state.collapsed = obj.collapsed; if(obj.quizScores) state.quizScores = obj.quizScores;
+          if(obj.projects) state.projects = obj.projects; if(obj.view) state.view = obj.view;
           if(obj.theme){ state.theme = obj.theme; applyTheme(state.theme); }
-          save(); buildNav(); setActiveNav(); progress(true); if(state.current) render(state.current); alert('Progress imported.');
+          save(); buildNav(); progress(true); route(); alert('Progress imported.');
         } catch(e){ alert('That file was not valid progress JSON.'); } };
         r.readAsText(f); }; inp.click(); };
 
@@ -590,12 +764,9 @@
     });
 
     // boot
-    buildNav(); progress(false);
+    buildNav(); progress(false); updateToggle();
     if(ANIM){ G.from('header.top',{y:-20,opacity:0,duration:.5,ease:'power3.out'}); G.from('nav.side .sec',{x:-16,opacity:0,duration:.45,stagger:.04,ease:'power2.out',delay:.1}); }
-    var start = (location.hash && byId[location.hash.replace('#','')]) ? location.hash.replace('#','')
-              : (state.current && byId[state.current]) ? state.current
-              : (DATA[0] && DATA[0].id);
-    if(start){ go(start); } else { render(null); }
+    route();
   })();
   </script>
 </body>

@@ -28,6 +28,11 @@ const FORBIDDEN = [
 const errors = [];
 const warnings = [];
 
+const LEVELS = ["learn", "build", "ship"];
+let path = null;
+try { path = JSON.parse(readFileSync(join(ROOT, "path.json"), "utf8")); }
+catch (e) { errors.push(`path.json: ${existsSync(join(ROOT, "path.json")) ? "invalid JSON — " + e.message : "missing"}`); }
+
 function words(html) {
   return String(html).replace(/<[^>]+>/g, " ").replace(/&[a-z]+;/gi, " ").trim().split(/\s+/).filter(Boolean).length;
 }
@@ -72,6 +77,10 @@ for (const exp of expected) {
   if (t.section !== exp.section) warnings.push(`${exp.id}: section mismatch (using manifest)`);
   // force canonical identity from manifest
   t.id = exp.id; t.order = exp.order; t.section = exp.section; t.title = exp.title;
+  // path metadata (level + pathOrder) — carried into the embedded data
+  if (!LEVELS.includes(exp.level)) errors.push(`${exp.id}: level must be one of ${LEVELS.join("/")} (got ${JSON.stringify(exp.level)})`);
+  if (typeof exp.pathOrder !== "number") errors.push(`${exp.id}: pathOrder must be a number`);
+  t.level = exp.level; t.pathOrder = exp.pathOrder;
 
   const w = words(t.lesson);
   if (w < 650) warnings.push(`${exp.id}: lesson only ${w} words (target 700–900)`);
@@ -115,6 +124,39 @@ for (const id of Object.keys(byId)) {
   if (!expected.find(e => e.id === id)) warnings.push(`content has unexpected topic "${id}" (not in manifest)`);
 }
 
+// Level coverage: every topic mapped to a level; warn on duplicate pathOrder within a level
+LEVELS.forEach(lv => {
+  const inLv = expected.filter(e => e.level === lv);
+  if (!inLv.length) errors.push(`no topics mapped to level "${lv}"`);
+  const seen = {};
+  inLv.forEach(e => { if (seen[e.pathOrder]) warnings.push(`level "${lv}": duplicate pathOrder ${e.pathOrder} (${seen[e.pathOrder]} & ${e.id})`); seen[e.pathOrder] = e.id; });
+});
+
+// Validate path.json (levels, resources, capstones, drawsOn, offline-safety of capstone HTML)
+if (path) {
+  if (!Array.isArray(path.levels) || path.levels.length !== 3) errors.push(`path.json: expected 3 levels (got ${(path.levels || []).length})`);
+  (path.levels || []).forEach((lv, i) => {
+    if (!LEVELS.includes(lv.id)) errors.push(`path.json level[${i}]: id must be learn/build/ship (got ${JSON.stringify(lv.id)})`);
+    if (!lv.title) errors.push(`path.json level "${lv.id}": missing title`);
+    (lv.resources || []).forEach((r, j) => { if (!r || !r.title || !r.url) errors.push(`path.json level "${lv.id}" resource[${j}]: needs title + url`); });
+    const c = lv.capstone;
+    if (!c) { errors.push(`path.json level "${lv.id}": missing capstone`); return; }
+    if (!c.title || !c.goal) errors.push(`path.json "${lv.id}" capstone: needs title + goal`);
+    if (!Array.isArray(c.steps) || !c.steps.length) errors.push(`path.json "${lv.id}" capstone: needs steps[]`);
+    if (!Array.isArray(c.definitionOfDone) || !c.definitionOfDone.length) errors.push(`path.json "${lv.id}" capstone: needs definitionOfDone[]`);
+    (c.drawsOn || []).forEach(id => { if (!VALID_IDS.has(id)) errors.push(`path.json "${lv.id}" capstone drawsOn unknown topic "${id}"`); });
+    // offline scan of capstone HTML-bearing fields (NOT resources[].url, which are legitimately https)
+    const htmlVals = [["goal", c.goal], ["why", c.why || ""]];
+    (c.steps || []).forEach((s, k) => htmlVals.push([`steps[${k}]`, s]));
+    (c.definitionOfDone || []).forEach((s, k) => htmlVals.push([`definitionOfDone[${k}]`, s]));
+    for (const [field, val] of htmlVals) {
+      for (const [re, label] of FORBIDDEN) if (re.test(String(val))) errors.push(`path.json "${lv.id}" capstone ${field}: forbidden ${label}`);
+      const hm = String(val).match(/href\s*=\s*["']([^"']*)["']/gi) || [];
+      for (const h of hm) { const tgt = (h.match(/href\s*=\s*["']([^"']*)["']/i) || [])[1] || ""; if (!tgt.startsWith("#") || !VALID_IDS.has(tgt.slice(1))) errors.push(`path.json "${lv.id}" capstone ${field}: bad href ${h}`); }
+    }
+  });
+}
+
 topics.sort((a, b) => a.order - b.order);
 
 // Report
@@ -144,10 +186,16 @@ template = template.replace("/*__GSAP__*/", () => gsap);
 // Escape </ as <\/ so a stray "</script>" in content can't close the tag; JSON.parse restores it.
 const payload = JSON.stringify(topics).replace(/<\//g, "<\\/");
 if (!template.includes("/*__COURSE_DATA__*/")) { console.error("template.html missing /*__COURSE_DATA__*/ marker"); process.exit(1); }
-const out = template.replace("/*__COURSE_DATA__*/", () => payload);
+template = template.replace("/*__COURSE_DATA__*/", () => payload);
 
-// Final offline guard on the assembled file (ignore our own first-party code)
-const externalHit = /(?:src|href)\s*=\s*["']https?:|@import|url\(\s*["']?https?:/i.test(payload);
+// 3) Inject path / roadmap data into its marker.
+const pathPayload = JSON.stringify(path || {}).replace(/<\//g, "<\\/");
+if (!template.includes("/*__PATH_DATA__*/")) { console.error("template.html missing /*__PATH_DATA__*/ marker"); process.exit(1); }
+template = template.replace("/*__PATH_DATA__*/", () => pathPayload);
+const out = template;
+
+// Final offline guard on the assembled data (resource urls live in "url" values, never in href=/src=)
+const externalHit = [payload, pathPayload].some(p => /(?:src|href)\s*=\s*["']https?:|@import|url\(\s*["']?https?:/i.test(p));
 if (externalHit) { console.error(`${R}Assembled data still references external resources — aborting.${RST}`); process.exit(1); }
 
 writeFileSync(join(ROOT, "index.html"), out);

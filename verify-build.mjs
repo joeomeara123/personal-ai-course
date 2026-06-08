@@ -54,6 +54,36 @@ ok(qzBad === 0, `every topic has a 4-question quiz (bad: ${qzBad})`);
 ok(qAnsBad === 0, `all ${quizTotal} quiz questions have a valid answer index (bad: ${qAnsBad})`);
 ok(fbHits === 0, `no forbidden/external content anywhere in topic data (hits: ${fbHits})`);
 
+// 3b) path / roadmap data: levels, capstones, level coverage, offline-safety
+ok(!html.includes("/*__PATH_DATA__*/"), "path data marker was replaced");
+const pm = html.match(/<script id="path-data" type="application\/json">([\s\S]*?)<\/script>/);
+ok(!!pm, "found <script id=path-data> block");
+let path = {};
+try { path = JSON.parse(pm[1]); ok(true, "path-data JSON.parse succeeds"); }
+catch (e) { ok(false, "path-data JSON.parse FAILED: " + e.message); }
+const levels = path.levels || [];
+ok(levels.length === 3, `3 path levels (got ${levels.length})`);
+const LV = new Set(["learn", "build", "ship"]);
+let capBad = 0, drawsBad = 0, pathFb = 0;
+levels.forEach((lv) => {
+  const cap = lv.capstone || {};
+  if (!cap.title || !cap.goal || !Array.isArray(cap.steps) || !cap.steps.length || !Array.isArray(cap.definitionOfDone) || !cap.definitionOfDone.length) capBad++;
+  (cap.drawsOn || []).forEach((id) => { if (!ids.has(id)) drawsBad++; });
+  [cap.goal, cap.why].concat(cap.steps || [], cap.definitionOfDone || []).forEach((s) => { if (s == null) return; for (const re of FB) if (re.test(String(s))) pathFb++; });
+});
+ok(capBad === 0, `every level has a complete capstone (bad: ${capBad})`);
+ok(drawsBad === 0, `all capstone drawsOn ids resolve to topics (broken: ${drawsBad})`);
+ok(pathFb === 0, `no forbidden/external content in capstone copy (hits: ${pathFb})`);
+
+// level coverage: every topic mapped to a valid level + numeric pathOrder; union covers all 84
+let lvBad = 0; const lvCount = { learn: 0, build: 0, ship: 0 };
+for (const t of data) { if (!LV.has(t.level) || typeof t.pathOrder !== "number") lvBad++; else lvCount[t.level]++; }
+ok(lvBad === 0, `every topic has a valid level + pathOrder (bad: ${lvBad})`);
+ok(lvCount.learn + lvCount.build + lvCount.ship === 84, `levels cover all 84 topics (learn ${lvCount.learn} · build ${lvCount.build} · ship ${lvCount.ship})`);
+
+// curated resource urls are embedded as text values, never as href/src attributes
+ok((html.match(/"url":"https?:/g) || []).length > 0, "curated resource urls embedded as selectable text");
+
 // 4) offline guarantee on the WHOLE file (ignore in-page #anchors)
 const externals = html.match(/(?:src|href)\s*=\s*["']https?:\/\/[^"']+/gi) || [];
 ok(externals.length === 0, `no external src/href URLs (found ${externals.length})`);

@@ -24,12 +24,13 @@ one bite-sized panel at a time, so it never feels like a wall of text:
 > **Export progress** / **Import** buttons in the sidebar to carry your checkmarks across.
 
 ### Features
+- 🗺 **Two ways to learn** — a guided **Path** (a *Learn → Build → Ship* roadmap toward AI engineer / FDE, with a 90-day pacing guide, curated courses, and a **ship-something-real capstone project** at each level) and the full **A–Z topic library**. Toggle anytime in the header.
 - 🧭 **Guided steps** per topic (Nutshell → Lesson → Visual → Practice → Quiz) — learn in small chunks, not a wall of text
 - 🖼️ A **custom animated SVG diagram** for every topic (theme-aware, draws itself in)
 - ✅ **Interactive quizzes** — 4 questions per topic, instant feedback + explanations, best score saved, pass to auto-complete
 - 📊 Progress bar + per-section completion counts, mark-complete toggles
 - 🎉 Delightful GSAP animations: staggered panel reveals, animated count-up progress bar, a confetti burst when you complete a topic, a toast when you finish a section, and a full celebration when you finish all 84
-- 💾 Auto-save & resume (last topic, completed topics, quiz scores, collapsed sections, theme)
+- 💾 Auto-save & resume (last view, last topic, completed topics, quiz scores, capstone progress, theme)
 - 🔎 Instant topic search · ⌨️ arrow-key navigation (← / → moves through the steps)
 - 🌙 Light / dark theme · 📱 works on phone & desktop
 - ♿ Respects `prefers-reduced-motion` (animations gracefully turn off)
@@ -52,7 +53,8 @@ The single `index.html` is **built** from small source pieces, so the content is
 and regenerate:
 
 ```
-topics.json       # canonical list of all 84 topics (id, order, section, title)
+topics.json       # canonical list of all 84 topics (id, order, section, title, level, pathOrder)
+path.json         # the Path/roadmap: 3 levels (Learn/Build/Ship), pacing, curated resources, capstone projects
 SPEC.md           # the content contract every topic follows
 content/*.json    # one file per topic (lesson, takeaways, mental model, diagram SVG, mistakes, exercise, quiz, key terms) — the "source of truth"
 template.html     # the app shell: all HTML/CSS/JS + animations (offline), with injection markers
